@@ -6,9 +6,16 @@ import { BrowserRouter as Router , Switch , Route} from
 "react-router-dom";
 import Checkout from "./Checkout";
 import { Login } from "/.Login";
-import payment from './Payment';
+import Payment from './Payment';
 import { auth }from "./firebase";
 import {useStateValue} from "./StatProvider";
+import {loadStripe} from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js"; 
+
+const promise = loadStripe(
+  "pk_test_51HPvU9DFg5koCdLG"
+
+)
 
 function App() {
   const [{},dispatch] =useStateValue();
@@ -22,7 +29,8 @@ function App() {
       dispatch({
         type: 'SET_USER',
         user: authUser
-    } else {
+    })
+   } else {
       dispatch({
         type: 'SET_USER',
         user:null
@@ -34,13 +42,7 @@ function App() {
     <Router>
     <div className="App">
       <Switch>
-      <Route path="/orders">
-        <Header />
-        <orders/>
-        </Route>
-        
-
-        <Route path="/login">
+         <Route path="/login">
           <Login /> 
         </Route>
         <Route path="/checkout">
@@ -61,15 +63,8 @@ function App() {
             </div>
             </Router>
   );
-            </Elements>
-            </Route>
-          </Header>
-    i    </Route>
-      </Switch>
-      <Header/>
-      <Home/>
-    </div>
-  );
+            
+   
 }
 
-export default App;กกห
+export default App;
