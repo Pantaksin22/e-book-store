@@ -1,19 +1,22 @@
-import React, {useState,useEffect} from 'React';
+import React, {useState,useEffect} from 'react';
 import './Payment.css'
+import { useStatvalue } from "./StateProvider";
 import CheckoutProduct from "react-router-dom";
 import { Link,UseHistory } from "react-router-dom";
 import { CardElement,useStripe,useElements } from "@stripe/react-stripe-js";
 import CurrentFormat from"react-currency-format";
+import {getBasketTotal} from "./reducer";
 import axios from './axios';
 import { db } from './firebase';
 
-function payment() {
+function Payment() {
     const [{basket,user}, dispatch] = useStateValue();
     const history = UseHistory();
     const stripe = useStripe();
     const element = useElements();
 
-    const [Succeeded,setSucceeded] = useState(false);
+
+    const [succeeded,setSucceeded] = useState(false);
     const [processing,setProcessing]= useState("");
     const [error, setError] = useState("");
     const [disabled, setDisabled] = useState(true);
@@ -34,7 +37,12 @@ function payment() {
         console.log(' ',user)
     
     const handleSubmit = async (event) => {
-    
+    }
+        const handleChange = event=> {
+            setDisabled(event.empty);
+            setError(event.error? event.error.message :"");
+        }
+      
         event.preventDefault();
         setProcessing(true);
        
@@ -68,26 +76,67 @@ function payment() {
     return(
          <div className='Payment'>
             <div className='Payment__container'>
-<div className='Payment__section'>
-    </div>
+                <h1> Checkout(<Link to="/checkout">{basket?.lenght}
+                items</Link>)
+                </h1>
+                
+
     <div className='Payment__section'>
     <div className='Payment__title'>
      <h3> Delivery Address</h3>
+     </div>
      <div className='Payment__address'>
+        <p>{user?.email}</p>
+        <p>123 React Lane</p>
+        <p>Los Angeles</p>
 
+     </div>
+     </div>
 
     <div className='Payment__section'>
-    
-    <div className='Payment__title'>
+        <div className='Payment__title'>
     <h3> Review item and Address</h3>
 </div>
 <div className='Payment__item'>
     {basket.map(item => (
-        checkout
+        <CheckoutProduct
+        id={item.id}
+        title={item.title}
+        image={item.image}
+        price={item.price}
+        rating={item.rating}
+        />
     )
     )}
 
     </div>
+
+    </div>
+    <div className='payment__section'>
+    <div className='Payment__title'>
+        <h3>Payment Method</h3>
+</div>
+<div className='payment__details'>
+<form onSubmit={handleSubmit}>
+<CardElement onChange={handleChange}/>
+<div classname="payment__priceContainer">
+<currencyFormat
+ renderText={(value)) => (
+    <h3>Order Total: (value)</h3>
+ )}
+ decimalScale={2}
+ value={getBasketTotal(basket))}
+ displayType={"Text"}
+ thousandSeparator={true}
+ prefix={"s"} />
+ <button disabled={processing || disabled || Succeeded}>
+    <span>{processing ? <p>Processing</p> :"Buy Now"} </span}
+    {/button}
+</div>
+</form>
+</div>
+</div>
+<div>
     console.log('The SECRET IS >>>',clientSecret)
     console.log(' ',clientSecret)
 

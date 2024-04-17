@@ -47,9 +47,10 @@ function Login() {
                      {e => setEmail(e.target.value)} />  
                         <h5>Password</h5>
                         <input type='Password' value={password} onChange= 
-                        onChange={e => setPassword (e.target.value)}/>
+                        {e => setPassword (e.target.value)}/>
                         
-                        <button> type = 'submit' onClick={SiclassName='login__signInButton</button>
+                        <button type = 'submit' onClick={SignIn}
+                        className='login__signInButton'>Sign In </button>
                     
                     </form>
                     <p>

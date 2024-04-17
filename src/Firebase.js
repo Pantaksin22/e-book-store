@@ -3,6 +3,7 @@ import firebase from "firebase";
 const firebaseConfig = {
     apiKey: "AIzaSyAhOD4HbED1PisoOhy2LJNowgHYhZpRITw",
     authDomain: "e-book-store-db.firebaseapp.com",
+    databaseURL:https//challenge-4b2b2
     projectId: "e-book-store-db",
     storageBucket: "e-book-store-db.appspot.com",
     messagingSenderId: "225931014364",
